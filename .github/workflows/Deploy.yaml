@@ -15,14 +15,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Replace Values in tfvars file
-        run: echo ${{ secrets.TERRAFORM }} >> production.tfvars
+        run: echo ${{ secrets.TERRAFORM }} >> production.tfvars.json
 
   CD:
     needs: [Replace-Files]
     name: Terraform Deploy
     uses: somasundar-dev/Deployments/.github/workflows/Terraform.yaml@main
     with:
-      tfvars_path: "./Infra/production.tfvars"
+      tfvars_path: "./Infra/production.tfvars.json"
       TF_WORKING_DIR: "./Infra"
       run_deployment: false
       run_destroy: false
