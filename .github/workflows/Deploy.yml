@@ -32,7 +32,7 @@ jobs:
   CD:
     name: Terraform Deploy
     # needs: [CI]
-    uses: somasundar-dev/Deployments/blob/main/.github/workflows/Terraform.yaml@main
+    uses: https://github.com/somasundar-dev/Deployments/blob/main/.github/workflows/Terraform.yaml
     with:
       tfvars_path: "./Infra/production.tfvars"
       TF_WORKING_DIR: "./Infra"
