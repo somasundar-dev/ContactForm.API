@@ -7,7 +7,9 @@ jobs:
   Replace-Files:
     name: Replace tfvars Files
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: ./Infra
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -16,6 +18,7 @@ jobs:
         run: echo ${{ secrets.TERRAFORM }} >> production.tfvars
 
   CD:
+    needs: [Replace-Files]
     name: Terraform Deploy
     uses: somasundar-dev/Deployments/.github/workflows/Terraform.yaml@main
     with:
