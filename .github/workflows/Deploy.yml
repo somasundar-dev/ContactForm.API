@@ -1,0 +1,89 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - "src/**"
+      - "tests/**"
+    branches:
+      - main
+      - release/**
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Code Formatting
+    uses: ./.github/workflows/CodeFormatting.yml
+
+  Checks:
+    if: ${{ startsWith(github.ref, 'refs/pull/') }}
+    name: Checks
+    needs: [lint]
+    uses: ./.github/workflows/Checks.yml
+
+  CI:
+    name: Build & Test
+    needs: [lint]
+    uses: ./.github/workflows/BuildProject.yml
+
+  CD:
+    needs: [CI]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    name: Deployment
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Infra
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Print Date Time
+        run: date
+
+      - name: Determine Build Version
+        id: versioning
+        run: |
+          VERSION=$(date +'%y%m.%d')
+          VERSION="${VERSION}.${{ github.run_number }}"
+          echo $VERSION
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Replace Values
+        run: echo ${{ secrets.TERRAFORM }} >> production.tfvars
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -var-file="production.tfvars"
+
+      - name: Terraform Apply
+        run: terraform apply -var-file="production.tfvars" -auto-approve
+
+      - name: Tag Release
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag ${{ steps.versioning.outputs.tag }}
+          git push origin ${{ steps.versioning.outputs.tag }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.versioning.outputs.tag }}
+          name: Release ${{ steps.versioning.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

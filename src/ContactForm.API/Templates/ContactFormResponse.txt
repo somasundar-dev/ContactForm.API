@@ -1,0 +1,15 @@
+Hi #SUBMITTER_NAME#,
+
+I truly appreciate your interest and would love to assist you with your queries.
+
+I will review your submission and get back to you shortly with more information. If your inquiry is urgent, please feel free to reach me at #EMAIL# or #CONTACT#.
+
+Name: #SUBMITTER_NAME#
+Email: #SUBMITTER_EMAIL#
+Message: #SUBMITTER_MESSAGE#
+
+Looking forward to speaking with you soon!
+
+Best regards,
+#NAME#
+#ADDRESS#
