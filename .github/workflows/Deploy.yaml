@@ -12,5 +12,3 @@ jobs:
       TF_WORKING_DIR: "./Infra"
       run_deployment: false
       run_destroy: false
-    secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
