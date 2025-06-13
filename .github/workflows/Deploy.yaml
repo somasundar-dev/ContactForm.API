@@ -26,7 +26,7 @@ jobs:
     name: Terraform Deploy
     uses: somasundar-dev/Deployments/.github/workflows/Terraform.yaml@main
     with:
-      tfvars_file: "production.tfvars.json"
+      tfvars_path: "production.tfvars.json"
       TF_WORKING_DIR: "./Infra"
       run_deployment: false
       run_destroy: false
