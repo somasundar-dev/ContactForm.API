@@ -3,6 +3,9 @@ name: CI/CD
 on:
   workflow_dispatch:
 
+permissions:
+  id-token: write
+
 jobs:
   Replace-Files:
     name: Replace tfvars Files
