@@ -21,10 +21,6 @@ jobs:
           name: "production.tfvars.json"
           json: ${{ secrets.TERRAFORM }}
 
-      - name: Log Contents
-        run: |
-          echo ${{ github.secrets.AWS_REGION }}
-
   CD:
     needs: [Replace-Files]
     name: Terraform Deploy
@@ -34,5 +30,6 @@ jobs:
       TF_WORKING_DIR: "./Infra"
       run_deployment: false
       run_destroy: false
-      aws_identity_provider_role: ${{ github.secrets.AWS_IDENTITY_PROVIDER_ROLE }}
-      aws_region: ${{ github.secrets.AWS_REGION }}
+    secrets:
+      aws_identity_provider_role: ${{ secrets.AWS_IDENTITY_PROVIDER_ROLE }}
+      aws_region: ${{ secrets.AWS_REGION }}
