@@ -26,7 +26,7 @@ jobs:
 
   Build:
     name: Build Contact Form API
-    uses: somasundar-dev/Deployments/.github/workflows/dotnet/BuildProject.yaml@main
+    uses: somasundar-dev/Deployments/.github/workflows/Dotnet_BuildProject.yaml@main
     with:
       solution_path: "ContactForm.sln"
 
