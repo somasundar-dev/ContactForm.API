@@ -21,6 +21,10 @@ jobs:
           name: "production.tfvars.json"
           json: ${{ secrets.TERRAFORM }}
 
+      - name: Log Contents
+        run: |
+          echo ${{ github.secrets.AWS_REGION }}
+
   CD:
     needs: [Replace-Files]
     name: Terraform Deploy
