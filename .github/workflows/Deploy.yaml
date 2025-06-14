@@ -30,3 +30,5 @@ jobs:
       TF_WORKING_DIR: "./Infra"
       run_deployment: false
       run_destroy: false
+      aws_identity_provider_role: ${{ github.secrets.AWS_IDENTITY_PROVIDER_ROLE }}
+      aws_region: ${{ github.secrets.AWS_REGION }}
